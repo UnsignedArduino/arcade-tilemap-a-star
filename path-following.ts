@@ -50,8 +50,13 @@ namespace scene {
                         pfs.index++;
                         const newTarget = path[pfs.index];
                         if (!newTarget) {
-                            sprite.setVelocity(0, 0);
                             target.place(sprite);
+                            if (pfs.useAccel) {
+                                sprite.ax = 0;
+                                sprite.ay = 0;
+                            } else {
+                                sprite.setVelocity(0, 0);
+                            }
                             store.removeAt(i);
                             // explicit endCb overrides kind cb
                             if (pfs.onEndHandler) {
