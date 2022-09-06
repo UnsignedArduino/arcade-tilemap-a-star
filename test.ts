@@ -38,6 +38,8 @@ function createIcon() {
                 s.setImage(sprites.vehicle.carBlueRight)
             } else if (s.vx < 0) {
                 s.setImage(sprites.vehicle.carBlueLeft)
+            } else {
+                s.setImage(sprites.vehicle.carBlueFront);
             }
         }
         for (const s of sprites.allOfKind(2)) {
@@ -47,6 +49,8 @@ function createIcon() {
                 s.setImage(sprites.vehicle.carRedRight)
             } else if (s.vx < 0) {
                 s.setImage(sprites.vehicle.carRedLeft)
+            } else {
+                s.setImage(sprites.vehicle.carRedFront)
             }
         }
         for (const s of sprites.allOfKind(3)) {
@@ -56,6 +60,8 @@ function createIcon() {
                 s.setImage(sprites.vehicle.carPinkRight)
             } else if (s.vx < 0) {
                 s.setImage(sprites.vehicle.carPinkLeft)
+            } else {
+                s.setImage(sprites.vehicle.carPinkFront)
             }
         }
     });

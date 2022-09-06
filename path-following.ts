@@ -66,9 +66,10 @@ namespace scene {
                         } else {
                             target.place(sprite);
                             if (useAccel) {
-                                
+                                setAccelerationTowards(sprite, newTarget, speed);
+                            } else {
+                                setVelocityTowards(sprite, newTarget, speed);
                             }
-                            setVelocityTowards(sprite, newTarget, speed);
                         }
                     }
                 }
@@ -145,14 +146,14 @@ namespace scene {
             }
             nearestTile.place(sprite);
             const remainingPath = getRemainingPath(sprite, path);
-            _followPath(sprite, remainingPath, speed);
+            _followPath(sprite, remainingPath, speed, useAccel);
             return
         }
 
         // if we're on the path already, just follow the subset of the remaining path
         const remainingPath = getRemainingPath(sprite, path);
         if (remainingPath) {
-            _followPath(sprite, remainingPath, speed);
+            _followPath(sprite, remainingPath, speed, useAccel);
             return;
         }
 
@@ -167,11 +168,11 @@ namespace scene {
             return false;
         });
 
-        _followPath(sprite, pathToNearest, speed, () => {
+        _followPath(sprite, pathToNearest, speed, useAccel, () => {
             // then follow the remaining of the path
             const remainingPath = getRemainingPath(sprite, path);
-            _followPath(sprite, remainingPath, speed, () => { }, useAccel);
-        }, useAccel)
+            _followPath(sprite, remainingPath, speed, useAccel);
+        })
     }
 
     /**
@@ -234,7 +235,7 @@ namespace scene {
         _followPath(sprite, path, speed);
     }
 
-    export function _followPath(sprite: Sprite, path: tiles.Location[], speed?: number, endCb?: () => void, useAccel: boolean = false) {
+    export function _followPath(sprite: Sprite, path: tiles.Location[], speed?: number, useAccel: boolean = false, endCb?: () => void) {
         if (!sprite)
             return;
 
@@ -253,7 +254,8 @@ namespace scene {
         const pfs = previousEl || new PathFollowingSprite(
             sprite,
             path,
-            speed || 50
+            speed || 50,
+            useAccel
         );
         if (previousEl) {
             if (speed)
