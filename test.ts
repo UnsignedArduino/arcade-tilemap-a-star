@@ -26,8 +26,10 @@ function createIcon() {
             . . . f f f . . . . f f f f . .
             . . . . . . . . . . . . . . . .
         `, randint(1, 3))
+        car.fx = 500;
+        car.fy = car.fx;
         tiles.placeOnTile(car, start)
-        scene.followPath(car, path)
+        scene.followPath(car, path, 100, true);
     });
 
     game.onUpdate(() => {
