@@ -9,7 +9,8 @@ namespace scene {
         constructor (
             public sprite: Sprite,
             public path: tiles.Location[],
-            public speed: number
+            public speed: number,
+            public useAccel: boolean = false
         ) {
             this.index = 0;
         }
@@ -36,7 +37,7 @@ namespace scene {
                     // the worklist
                 {
                     const pfs = store[i]
-                    const { sprite, index, path, speed } = pfs;
+                    const { sprite, index, path, speed, useAccel } = pfs;
                     const target: tiles.Location = path[index];
 
                     const { x, y, vx, vy } = sprite;
@@ -64,6 +65,9 @@ namespace scene {
                             }
                         } else {
                             target.place(sprite);
+                            if (useAccel) {
+                                
+                            }
                             setVelocityTowards(sprite, newTarget, speed);
                         }
                     }
@@ -80,6 +84,14 @@ namespace scene {
         sprite.vy = (dy / dist) * speed;
     }
 
+    function setAccelerationTowards(sprite: Sprite, target: tiles.Location, speed: number) {
+        const dx = target.x - sprite.x;
+        const dy = target.y - sprite.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        sprite.ax = (dx / dist) * speed;
+        sprite.ay = (dy / dist) * speed;
+    }
+
     // TODO: probably should have logic to bail when a tile that wasn't a wall
     //      is set to be a wall. Or just use velocity, and let enemy run into wall
 
@@ -88,15 +100,16 @@ namespace scene {
      * @param sprite sprite to give a path to
      * @param path path to follow
      * @param speed speed at which to follow path eg: 50
+     * @param useAccel Use acceleration instead of velocity to move the sprite
      */
-    //% block="sprite $sprite follow path $path || speed %speed"
+    //% block="sprite $sprite follow path $path || speed %speed and use acceleration $useAccel"
     //% sprite.shadow="variables_get"
     //% sprite.defl="mySprite"
     //% path.shadow="variables_get"
     //% path.defl="locationTiles"
     //% help=github:arcade-tilemap-a-star/docs/follow-path
     //% group="Path Following" weight=9
-    export function followPath(sprite: Sprite, path: tiles.Location[], speed: number = 50) {
+    export function followPath(sprite: Sprite, path: tiles.Location[], speed: number = 50, useAccel: boolean = false) {
         if (!sprite)
             return;
         if (!path || !path.length || !speed) {
@@ -157,8 +170,8 @@ namespace scene {
         _followPath(sprite, pathToNearest, speed, () => {
             // then follow the remaining of the path
             const remainingPath = getRemainingPath(sprite, path);
-            _followPath(sprite, remainingPath, speed);
-        })
+            _followPath(sprite, remainingPath, speed, () => { }, useAccel);
+        }, useAccel)
     }
 
     /**
@@ -221,7 +234,7 @@ namespace scene {
         _followPath(sprite, path, speed);
     }
 
-    export function _followPath(sprite: Sprite, path: tiles.Location[], speed?: number, endCb?: () => void) {
+    export function _followPath(sprite: Sprite, path: tiles.Location[], speed?: number, endCb?: () => void, useAccel: boolean = false) {
         if (!sprite)
             return;
 
@@ -256,7 +269,11 @@ namespace scene {
             store.push(pfs);
         }
 
-        setVelocityTowards(sprite, start, pfs.speed)
+        if (useAccel) {
+            setAccelerationTowards(sprite, start, pfs.speed);
+        } else {
+            setVelocityTowards(sprite, start, pfs.speed)
+        }
     }
 
     /**

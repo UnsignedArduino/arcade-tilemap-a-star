@@ -3,9 +3,9 @@ createIcon()
 function createIcon() {
     scene.setBackgroundColor(13)
     tiles.setTilemap(tilemap`level1`);
-    const start = tiles.getRandomTileByType(myTiles.tile2);
-    const end = tiles.getRandomTileByType(myTiles.tile3)
-    const path = scene.aStar(start, end)
+    const start = tiles.getTileLocation(0, 6);
+    const end = tiles.getTileLocation(1, 0);
+    const path = scene.aStar(start, end, myTiles.tile5);
 
     game.onUpdateInterval(1500, function() {
         const car = sprites.create(img`

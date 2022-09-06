@@ -10,6 +10,8 @@ namespace myTiles {
     export const tile3 = image.ofBuffer(hex``);
     //% fixedInstance jres blockIdentity=images._tile
     export const tile4 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile5 = image.ofBuffer(hex``);
 
     helpers._registerFactory("tilemap", function(name: string) {
         switch(helpers.stringTrim(name)) {
@@ -33,16 +35,16 @@ namespace myTiles {
 . . . . . . . . . . . . . . . . 
 `, [myTiles.transparency16,sprites.castle.tilePath5,sprites.castle.tileGrass1], TileScale.Sixteen);
             case "level1":
-            case "level1":return tiles.createTilemap(hex`0a0008000807070707070707070704070707070707070707010202020205070707070707070707040707070707070707070102020205070707070707070707040602020202020202020307070707070707070707`, img`
-. 2 2 2 2 2 2 2 2 2 
-. 2 2 2 2 2 2 2 2 2 
-. . . . . . 2 2 2 2 
-2 2 2 2 2 . 2 2 2 2 
-2 2 2 2 2 . . . . . 
-2 2 2 2 2 2 2 2 2 . 
+            case "level1":return tiles.createTilemap(hex`0a0008000102010101010101010101020101020202020201010201010201010102010102010102010101020101020202020101010201010101010101010102010202020202020202020101010101010101010101`, img`
 . . . . . . . . . . 
-2 2 2 2 2 2 2 2 2 2 
-`, [myTiles.transparency16,sprites.vehicle.roadTurn3,sprites.vehicle.roadHorizontal,sprites.vehicle.roadTurn4,sprites.vehicle.roadVertical,sprites.vehicle.roadTurn2,myTiles.tile2,sprites.castle.tilePath5,myTiles.tile3], TileScale.Sixteen);
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+`, [myTiles.transparency16,sprites.castle.tilePath5,myTiles.tile5], TileScale.Sixteen);
         }
         return null;
     })
@@ -57,6 +59,8 @@ namespace myTiles {
             case "tile3":return tile3;
             case "myTile1":
             case "tile4":return tile4;
+            case "road":
+            case "tile5":return tile5;
         }
         return null;
     })
