@@ -108,13 +108,15 @@ namespace scene {
      * @param speed speed at which to follow path eg: 50
      * @param useAccel Use acceleration instead of velocity to move the sprite
      */
-    //% block="sprite $sprite follow path $path || speed %speed and use acceleration $useAccel"
+    //% block="sprite $sprite follow path $path || speed %speed|use acceleration $useAccel"
     //% sprite.shadow="variables_get"
     //% sprite.defl="mySprite"
     //% path.shadow="variables_get"
     //% path.defl="locationTiles"
     //% help=github:arcade-tilemap-a-star/docs/follow-path
     //% group="Path Following" weight=9
+    //% expandableArgumentMode="enabled"
+    //% inlineInputMode=inline
     export function followPath(sprite: Sprite, path: tiles.Location[], speed: number = 50, useAccel: boolean = false) {
         if (!sprite)
             return;
